@@ -29,7 +29,7 @@
    String time = sdf.format(Calendar.getInstance().getTime());
    DBDao dao = new DBDao();
    Object [] params = new Object[]{id, url == null ? "*" : url, ip == null ? "*" : ip, time};
-   //dao.update("insert into b_login_record values (?,?,?,?)", params);
+   dao.update("insert into b_login_record values (?,?,?,?)", params);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -37,87 +37,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>www.linbinblog.com</title>
 <style type="text/css">
-	body {
-		font-style: italic;
-	}
-	.blockinline {
-		display: block;
-	}
-	.img-box {
-		padding-bottom:100%;
-		display: inline;
-	}
-	.img-box img {
-		position:absolute;
-		top:0;
-		bottom:0;
-		left:0;
-		right:0;
-		width:100%;
-		margin:auto;
-	}
-	.cover {
-		cursor:pointer;
-	}
-	ul#nav{ height:40px; background:#00A2CA;margin:0 auto} 
-	ul#nav li{display:inline; height:40px} 
-	ul#nav li a{display:inline-block; padding:0 20px; height:40px; line-height:40px;}
-	ul#nav li a:hover {background:#0095BB}
+	
 </style>
+<link rel="stylesheet" href="<%=basePath %>css/index.css" type="text/css">
 <script type="text/javascript" src="<%=basePath %>js/index.js"></script>
 <script type="text/javascript">
-	function login() {
-		var url = "<%=basePath%>login.jsp";
-		window.open(url, "_blank", "width=700,height=400,top=200,left=460,location=no,toolbar=no,directories=no");
-	}
-	var mvspd = 2;
-	var dir = 1;
-	window.setInterval(function(){
-		var celsayDiv = document.getElementById("cel_say");
-		//document.attributes.getNamedItem("style");
-		debugger
-		var mleft = celsayDiv.style.marginLeft;
-		var mleftcount = mleft.substring(0,mleft.indexOf("p")); 
-		document.getElementsByTagName("body");
-		if(mleftcount == "") {
-			mleftcount = 2;
-		} else {
-			var maxCount = Math.round(document.getElementsByTagName("body")[0].scrollWidth*0.7);
-			var offset = -80;
-			if(mleftcount >= maxCount+offset) {
-				dir = -1;
-			}else if(mleftcount < 0) {
-				dir = 1;
-			}
-			mleftcount = Number(mleftcount) + mvspd * dir;			
-		}
-		celsayDiv.style.marginLeft = mleftcount+"px";
-	}, 20);
+	
 </script>
 </head>
 <body background="<%=basePath %>pic/telescope2+width.jpg" style="background-repeat: no-repeat; background-size:cover; background-attachment: fixed;">
-<div name="bg" style="width:100%; height:1050px;"><!-- background-color: #CCFF99;  -->
+<div id="bg" name="bg" style="width:100%; height:1050px;"><!-- background-color: #CCFF99;  -->
 	<div style="width:70%; margin: 0 auto">
 		<div class=".blockinline" style="float:left; margin: 0px 10px 0px 10px"><img alt="family" src="<%=basePath%>pic/family.jpg" style="height:40px;"></div>
 		<h1>welcome to my new web site!</h1>
 	</div>
 	<div name="content" style="width:70%; height:1070px; margin: 0 auto"><!-- background-color: #FFFF99; -->
-		<div style="height:1000px">
+		<div class="tab-content" style="height:1000px">
 			<div name="headPic" style="height:40px; text-align: left; color: #E1FFFF;width:100%;">
 				<div class="blockinline" style="float: left; width:30%">425475449@qq.com&nbsp&nbsp&nbsp&nbsp<img alt="live" src="<%=basePath%>pic/heart.gif" height="17px" width="15px"></div>
 				<div class="blockinline" style="float: right; width:40px; font-style: normal; color:black; cursor:pointer;" onclick="login();">login</div>
 			</div>
 			<div name="navigateBar" style="height:40px; background-color:#0099CC">
 				<ul id="nav">
-					<li><a onclick='cool(this);'>主页</a></li>
-					<li><a onclick='cool(this);'>技术</a></li>
-					<li><a onclick='cool(this);'>情感</a></li>
+					<li><a name="main_page" onclick='tabChange(this);'>主页</a></li>
+					<li><a name="tech_page" onclick='tabChange(this);'>技术</a></li>
+					<li><a name="emot_page" onclick='tabChange(this);'>情感</a></li>
 				</ul>
 			</div>
 			<hr>
-			<div id="cel_say" style="font-size: 5px; color: yellow">元旦快乐！</div>
+			<div id="cel_say" style="font-size: 5px; color: yellow">新年快乐！</div>
 			<hr>
-			<div name="blockBody" style="height:800px; margin-top:10px">
+			<div id="main_page" name="blockBody" style="height:800px; margin-top:10px">
 				<div class="blockinline" name="leftBlock" style="width:25%; float:left; height:500px; margin-right:2%;">
 					<div style="height:250px; background-color: white; margin-bottom:10px">
 						<div style="height:20px;text-align:center">linbin的blog</div>
@@ -166,6 +116,24 @@
 						<img src="<%=basePath %>pic/playball.gif" height="140px"/><br>
 						登录次数：<%=count %>
 					</div>
+				</div>
+			</div>
+			<div id="tech_page">
+				<div id="tech_list">
+					<ul>
+						<li>1</li>
+						<li>2</li>
+						<li>3</li>
+					</ul>
+				</div>
+			</div>
+			<div id="emot_page">
+				<div id="em_list">
+					<ul>
+						<li>1</li>
+						<li>2</li>
+						<li>3</li>
+					</ul>
 				</div>
 			</div>
 		</div>

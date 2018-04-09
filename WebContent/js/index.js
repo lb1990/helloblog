@@ -53,6 +53,39 @@ function praise(obj) {
 	xmlhttp.open("GET","save?articleid="+articleid,true);
 	xmlhttp.send();
 }
+function login() {
+	var url = "<%=basePath%>login.jsp";
+	window.open(url, "_blank", "width=700,height=400,top=200,left=460,location=no,toolbar=no,directories=no");
+}
+var mvspd = 2;
+var dir = 1;
+window.setInterval(function(){
+	var celsayDiv = document.getElementById("cel_say");
+	var mleft = celsayDiv.style.marginLeft;
+	var mleftcount = mleft.substring(0,mleft.indexOf("p")); 
+	document.getElementsByTagName("body");
+	if(mleftcount == "") {
+		mleftcount = 2;
+	} else {
+		var maxCount = Math.round(document.getElementsByTagName("body")[0].scrollWidth*0.7);
+		var offset = -80;
+		if(mleftcount >= maxCount+offset) {
+			dir = -1;
+		}else if(mleftcount < 0) {
+			dir = 1;
+		}
+		mleftcount = Number(mleftcount) + mvspd * dir;			
+	}
+	celsayDiv.style.marginLeft = mleftcount+"px";
+}, 20);
+/**tab页切换*/
+function tabChange(obj) {
+	debugger
+	
+	var mainPage = document.getElementById(obj.name);
+	mainPage.className = "show";
+			
+}
 function comment(obj) {
 	alert("wait...");
 }

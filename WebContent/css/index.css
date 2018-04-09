@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+body {
+		font-style: italic;
+}
+.blockinline {
+	display: block;
+}
+.img-box {
+	padding-bottom:100%;
+	display: inline;
+}
+.img-box img {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	width:100%;
+	margin:auto;
+}
+.cover {
+	cursor:pointer;
+}
+ul#nav{ height:40px; background:#00A2CA;margin:0 auto} 
+ul#nav li{display:inline; height:40px} 
+ul#nav li a{display:inline-block; padding:0 20px; height:40px; line-height:40px;}
+ul#nav li a:hover {background:#0095BB}
+.tab-content .show{
+	display:display;
+}
+.tab-content .hide{
+	display:none;
+}

@@ -22,14 +22,20 @@ public class DBDao {
 		List list = new ArrayList();
 		try {
 			pst = conn.prepareStatement(sql);
+			if(params != null) {
+				for(int i=1; i<=params.length; i++) {
+					pst.setObject(i, params[i-1]);
+				}
+			}
 			rs = pst.executeQuery();
 			ResultSetMetaData count = pst.getMetaData();
 			int columnCount = count.getColumnCount();
 			while (rs.next()) {
 				Map map = new HashMap();
 				for (int i=1; i<=columnCount; i++) {
-					map.put(count.getColumnName(i), rs.getObject(i));
+					map.put(count.getColumnName(i), rs.getString(i));
 				}
+				list.add(map);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -40,6 +46,22 @@ public class DBDao {
 		return list;
 	}
 	
+	public void update(String sql, Object [] params) {
+		Connection conn = getConn();
+		PreparedStatement pst = null;
+		try {
+			pst = conn.prepareStatement(sql);
+			for(int i=0; i<params.length; i++) {
+				pst.setString(i+1, params[i].toString());
+			}
+			int i=pst.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(null,pst,conn);
+		}
+	}
+	
 	public Connection getConn() {
 		if(conn != null) return conn;
 		Connection conn = null;
@@ -48,7 +70,7 @@ public class DBDao {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		String url = "jdbc:mysql://localhost:3306/mysql";
+		String url = "jdbc:mysql://localhost:3306/blog";
 		String user = "linbin";
 		String password = "aliens2017";
 		try {
@@ -76,6 +98,8 @@ public class DBDao {
 	}
 	public static void main(String[] args) {
 		DBDao dao = new DBDao();
+		System.out.println(dao.getConn());
+		dao.update("insert into b_login_record values (?,?,?)", new Object[]{3, "baidu", "1.1.1.1"});
 	}
 	
 }
