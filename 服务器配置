@@ -1,2 +1,3 @@
+//*---Ubuntu Server 16.04.1 LTS 64位---*\\
 jdk 的安装
 1.复制和粘贴路径jdk路径在/etc/environment,/etc/profile中
