@@ -1,38 +1,180 @@
+<%@page import="java.io.PrintWriter"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.UUID,java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.lbblog.db.*" %>
+<% 
+   String contextPath = request.getContextPath();
+   String servName = request.getServerName();
+   int servPort = request.getServerPort();
+   String servPath = request.getServletPath();
+   StringBuffer reqUrl = request.getRequestURL();
+   String scheme = request.getScheme();
+   String basePath = scheme+"://"+servName+":"+servPort+contextPath+"/";
+   int count = 0;
+   String sessionid = session.getId();
+   if(application.getAttribute("loginCount") != null) {
+	   count = Integer.parseInt(application.getAttribute("loginCount").toString());
+	   count++;
+	   application.setAttribute("loginCount", count);   
+   }else{
+	   count++;
+	   application.setAttribute("loginCount", count);
+   }
+   String url = request.getHeader("Referer");
+   String ip = request.getRemoteAddr();
+   String id = UUID.randomUUID().toString();
+   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+   String time = sdf.format(Calendar.getInstance().getTime());
+   DBDao dao = new DBDao();
+   Object [] params = new Object[]{id, url == null ? "*" : url, ip == null ? "*" : ip, time};
+   //dao.update("insert into b_login_record values (?,?,?,?)", params);
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>www.linbinblog.com</title>
 <style type="text/css">
-.blockinline {
-	display: block;
-}
+	body {
+		font-style: italic;
+	}
+	.blockinline {
+		display: block;
+	}
+	.img-box {
+		padding-bottom:100%;
+		display: inline;
+	}
+	.img-box img {
+		position:absolute;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		width:100%;
+		margin:auto;
+	}
+	.cover {
+		cursor:pointer;
+	}
+	ul#nav{ height:40px; background:#00A2CA;margin:0 auto} 
+	ul#nav li{display:inline; height:40px} 
+	ul#nav li a{display:inline-block; padding:0 20px; height:40px; line-height:40px;}
+	ul#nav li a:hover {background:#0095BB}
 </style>
+<script type="text/javascript" src="<%=basePath %>js/index.js"></script>
+<script type="text/javascript">
+	function login() {
+		var url = "<%=basePath%>login.jsp";
+		window.open(url, "_blank", "width=700,height=400,top=200,left=460,location=no,toolbar=no,directories=no");
+	}
+	var mvspd = 2;
+	var dir = 1;
+	window.setInterval(function(){
+		var celsayDiv = document.getElementById("cel_say");
+		//document.attributes.getNamedItem("style");
+		debugger
+		var mleft = celsayDiv.style.marginLeft;
+		var mleftcount = mleft.substring(0,mleft.indexOf("p")); 
+		document.getElementsByTagName("body");
+		if(mleftcount == "") {
+			mleftcount = 2;
+		} else {
+			var maxCount = Math.round(document.getElementsByTagName("body")[0].scrollWidth*0.7);
+			var offset = -80;
+			if(mleftcount >= maxCount+offset) {
+				dir = -1;
+			}else if(mleftcount < 0) {
+				dir = 1;
+			}
+			mleftcount = Number(mleftcount) + mvspd * dir;			
+		}
+		celsayDiv.style.marginLeft = mleftcount+"px";
+	}, 20);
+</script>
 </head>
-<body>
-<h1>welcome to 卖萌的二哈  web site!哈哈</h1>
-<div name="bg" style="width:100%; height:1000px; background-color: #CCFF99">
-	<div name="content" style="width:70%; height:1000px; margin: 0 auto; background-color: #FFFF99">
-		<div style="height:980px">
-			<div name="headPic" style="height:20px;  background-color:#99CCCC">图片</div>
-			<div name="navigateBar" style="height:40px; background-color:#0099CC">导航栏</div>
+<body background="<%=basePath %>pic/telescope2+width.jpg" style="background-repeat: no-repeat; background-size:cover; background-attachment: fixed;">
+<div name="bg" style="width:100%; height:1050px;"><!-- background-color: #CCFF99;  -->
+	<div style="width:70%; margin: 0 auto">
+		<div class=".blockinline" style="float:left; margin: 0px 10px 0px 10px"><img alt="family" src="<%=basePath%>pic/family.jpg" style="height:40px;"></div>
+		<h1>welcome to my new web site!</h1>
+	</div>
+	<div name="content" style="width:70%; height:1070px; margin: 0 auto"><!-- background-color: #FFFF99; -->
+		<div style="height:1000px">
+			<div name="headPic" style="height:40px; text-align: left; color: #E1FFFF;width:100%;">
+				<div class="blockinline" style="float: left; width:30%">425475449@qq.com&nbsp&nbsp&nbsp&nbsp<img alt="live" src="<%=basePath%>pic/heart.gif" height="17px" width="15px"></div>
+				<div class="blockinline" style="float: right; width:40px; font-style: normal; color:black; cursor:pointer;" onclick="login();">login</div>
+			</div>
+			<div name="navigateBar" style="height:40px; background-color:#0099CC">
+				<ul id="nav">
+					<li><a onclick='cool(this);'>主页</a></li>
+					<li><a onclick='cool(this);'>技术</a></li>
+					<li><a onclick='cool(this);'>情感</a></li>
+				</ul>
+			</div>
+			<hr>
+			<div id="cel_say" style="font-size: 5px; color: yellow">元旦快乐！</div>
 			<hr>
 			<div name="blockBody" style="height:800px; margin-top:10px">
 				<div class="blockinline" name="leftBlock" style="width:25%; float:left; height:500px; margin-right:2%;">
-					<div style="height:200px; background-color: white; margin-bottom:10px">头像</div>
-					<div style="height:100px; background-color: white; margin-bottom:10px">属性</div>
-					<div style="height:90px; background-color: white; margin-bottom:10px">其他内容</div>
+					<div style="height:250px; background-color: white; margin-bottom:10px">
+						<div style="height:20px;text-align:center">linbin的blog</div>
+						<hr>
+						<div class=".img-box" style="text-align: center">
+							<img src="<%=basePath %>pic/jinmao.jpg" height="170px"/>
+						</div>
+						<div style="width:100%; height:15px; text-align: center"><a onclick='cool(this);'>发私信</a>|<a onclick='cool(this);'>加友情链接</a></div>
+					</div>
+					<div style="height:200px; background-color: white; margin-bottom:10px">
+						<div style="margin-left:10px">
+							博客统计信息
+							<hr>
+							用户名：卖萌的二哈<br>
+							文章数：1<br>
+							评论数：0<br>						
+						</div>
+					</div>
+					<div id="suxing" style="height:100px; background-color: white; margin-bottom:10px"></div>
+					<div style="height:90px; background-color: white; margin-bottom:10px">other thing</div>
 				</div>
 				<div class="blockinline" name="leftBlock" style="width:46%; float: left; height:700px; margin-right:2%;">
-					<div style="height:400px; background-color: white">文章</div>
-					<div style="height:200px; background-color: white; margin-top:10px">访客</div>
+					<div id="article" style="height:400px; background-color: white; position: relative;">
+						<!-- <div style="width:100px;height:20px;margin-left:10px">
+							<label style="text-align: center;"></label>
+						</div> -->
+						<div style="margin-left:10px">
+							文章
+							<hr>
+							<div id="content" style="height:320px; margin: 10px 10px auto 0px"></div>
+						</div>
+					</div>
+					<div style="height:200px; background-color: white; margin-top:10px">will be staying</div>
 				</div>
-				<div class="blockinline" name="blockinline" style="width:25%; float:right; height:500px; margin: auto; background-color: white">右侧内容</div>
+				<div class="blockinline" name="blockinline" style="width:25%; float:right; height:250px; margin: auto; background-color: white; margin-bottom:10px">
+					<div style="margin-left:10px">
+						网站链接<hr>
+						<div><a href="http://www.baidu.com">百度</a></div>
+					</div>
+				</div>
+				<div class="blockinline" name="blockinline" style="width:25%; float:right; height:250px; margin: auto; background-color: white">
+					<div style="margin-left:10px">
+						看视频<hr>
+						<div><a href="http://www.iqiyi.com/w_19rs9jwy4x.html">宋冬野西安演唱会</a></div>
+						<hr>
+						<img src="<%=basePath %>pic/playball.gif" height="140px"/><br>
+						登录次数：<%=count %>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div style="margin:0px auto; text-align:center">地球的中心</div>
+		<div style="margin:0px auto; text-align:center">
+			<div style="height:30px;color: #FAEBD7">地球的中心</div>
+			<div style="width:300px;margin:0 auto; padding:5px 0px;">
+		 		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=37010502000967" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="<%=basePath %>pic/beian.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#FAEBD7;">鲁公网安备 37010502000967号</p></a>
+		 	</div>
+		</div>
 	</div>
 </div>
 </body>
