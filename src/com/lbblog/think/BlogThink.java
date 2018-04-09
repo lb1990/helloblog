@@ -4,7 +4,7 @@ import com.lbblog.db.DBDao;
 
 public class BlogThink implements IBlogThink {
 	private DBDao dao = new DBDao();
-	@Override
+
 	public void queryContent() {
 		String sql = "";
 		Object [] params = {};  
